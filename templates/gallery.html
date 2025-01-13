@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Check all our products</h1>
+
+
+<div class="filter-menu">
+    <form class="filters" method="GET" action="{{ url_for('search_gallery') }}">
+        <div class="row">
+
+            <div id="filter" class="col-md-3">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="Console" {% if request.args.get('category') == 'Console' %}selected{% endif %}>Console</option>
+                    <option value="Disc" {% if request.args.get('category') == 'Disc' %}selected{% endif %}>Disc</option>
+                </select>
+            </div>
+
+
+            <div id="filter" class="col-md-3">
+                <label for="price">Price Range</label>
+                <select name="price" id="price" class="form-control">
+                    <option value="">All Prices</option>
+                    <option value="low" {% if request.args.get('price') == 'low' %}selected{% endif %}>Under $50</option>
+                    <option value="medium" {% if request.args.get('price') == 'medium' %}selected{% endif %}>$50 - $200</option>
+                    <option value="high" {% if request.args.get('price') == 'high' %}selected{% endif %}>Above $200</option>
+                </select>
+            </div>
+
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary mt-4">Apply Filters</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+            <div id="cards" class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <a class="goto" href="/card/{{ product.name }}">
+                    <div class="card">
+                        <img src="{{ product.img }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.title }}</p>
+                            <a href="#" class="btn btn-primary btn-buy">Buy it</a>
+                             {% if current_user.role == "Admin" %}
+                                    <a href="/edit_product/{{ product.id }}" class="btn btn-secondary">Edit</a>
+                                {% endif %}
+
+                                {% if current_user.role == "Admin" %}
+                                    <a href="/delete_product/{{ product.id }}" class="btn btn-danger">Delete</a>
+                                {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="pagination">
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if current_page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(request.endpoint, page=current_page-1) }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+
+            {% for page in range(start_page, end_page + 1) %}
+                <li class="page-item {% if page == current_page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for(request.endpoint, page=page) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            {% if current_page < total_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(request.endpoint, page=current_page+1) }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+
+{% endblock %}

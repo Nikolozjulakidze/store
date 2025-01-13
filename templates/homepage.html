@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="carousel-container">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://gamezone.ge/images/promo/24/%E1%83%91%E1%83%90%E1%83%9C%E1%83%94%E1%83%A0%E1%83%98_recovered.jpg" class="d-block w-100" alt="Promo Image 1">
+            </div>
+            <div class="carousel-item">
+                <img src="https://gamezone.ge/images/promo/22/PS5---Gameban-gamezone.ge_o6z4-u5.jpg" class="d-block w-100" alt="Promo Image 2">
+            </div>
+            <div class="carousel-item">
+                <img src="https://gamezone.ge/images/promo/23/55555.jpg" class="d-block w-100" alt="Promo Image 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<h1 class="title">
+    {% if search_term %}
+        Search Results for: "{{ search_term }}"
+    {% else %}
+        Best Sellers of This Month:
+    {% endif %}
+</h1>
+
+
+
+
+<div class="container">
+
+    <div class="row">
+        {% if products %}
+            {% for product in products %}
+            <div id="cards" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                <a class="goto" href="/card/{{ product.name }}">
+                    <div class="card">
+                        <img src="{{ product.img }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.title }}</p>
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-primary btn-buy">Buy it</a>
+
+                                {% if current_user.role == "Admin" %}
+                                    <a href="/edit_product/{{ product.id }}" class="btn btn-secondary">Edit</a>
+                                {% endif %}
+
+                                {% if current_user.role == "Admin" %}
+                                    <a href="/delete_product/{{ product.id }}" class="btn btn-danger">Delete</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p class="text-center">
+                    {% if search_term %}
+                        No products found for "{{ search_term }}".
+                    {% else %}
+                        No products available at the moment.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="about">About Us</h1>
+
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Our Mission
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                At ConsoleStore, our mission is to unite gaming enthusiasts under one roof, whether you're a PlayStation aficionado, an Xbox devotee, or a collector of physical game discs. We strive to offer the latest gaming news, exclusive deals, and expert recommendations to elevate your gaming journey!
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Our Story
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                Founded by a group of dedicated gamers, ConsoleStore began as a small community for gaming enthusiasts and has evolved into a hub for console lovers, collectors, and players alike. We’re committed to delivering the best gaming resources, deals, and insights for players of all skill levels and interests.
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                What We Offer
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                Whether you’re searching for the latest game releases, console reviews, or want to stay updated on exclusive deals and gaming news, we’ve got you covered. We offer everything from expert gaming tips to in-depth product analyses, ensuring you have the best gaming experience possible.
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
