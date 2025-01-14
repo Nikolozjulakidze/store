@@ -126,11 +126,11 @@ def gallery():
     items_per_page = 10
     current_page = int(request.args.get('page', 1))
 
-    total_items = products.query.count()
+    total_items = Product.query.count()
     total_pages = (total_items + items_per_page - 1) // items_per_page  # ceil without import
 
 
-    items = products.query.offset((current_page - 1) * items_per_page).limit(items_per_page).all()
+    items = Product.query.offset((current_page - 1) * items_per_page).limit(items_per_page).all()
 
 
     pages_to_show = 3
@@ -140,7 +140,7 @@ def gallery():
 
     return render_template(
         'gallery.html',
-        items=items,
+        products=items,
         current_page=current_page,
         total_pages=total_pages,
         start_page=start_page,
