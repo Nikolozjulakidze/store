@@ -123,17 +123,23 @@ def about():
 
 @app.route('/gallery')
 def gallery():
-    items_per_page = 10
-    current_page = int(request.args.get('page', 1))
+    items_per_page = 4 
+    current_page = int(request.args.get('page', 1)) 
+
 
     total_items = Product.query.count()
-    total_pages = (total_items + items_per_page - 1) // items_per_page  # ceil without import
+    total_pages = (total_items + items_per_page - 1) // items_per_page
 
+ 
+    if current_page < 1:
+        current_page = 1
+    elif current_page > total_pages:
+        current_page = total_pages
 
+  
     items = Product.query.offset((current_page - 1) * items_per_page).limit(items_per_page).all()
 
-
-    pages_to_show = 3
+    pages_to_show = 2
     start_page = max(1, current_page - (pages_to_show // 2))
     end_page = min(total_pages, start_page + pages_to_show - 1)
     start_page = max(1, end_page - pages_to_show + 1)
@@ -146,6 +152,8 @@ def gallery():
         start_page=start_page,
         end_page=end_page,
     )
+
+
 
 @app.route("/search_gallery", methods=["GET"])
 def search_gallery():
@@ -170,11 +178,22 @@ def search_gallery():
 
     pagination = products_query.paginate(page=page, per_page=per_page, error_out=False)
     products = pagination.items
+
+    pages_to_show = 2
+    start_page = max(1, pagination.page - (pages_to_show // 2))
+    end_page = min(pagination.pages, start_page + pages_to_show - 1)
+    start_page = max(1, end_page - pages_to_show + 1)
+
     return render_template(
         "gallery.html",
         products=products,
         pagination=pagination,
+        current_page=pagination.page,
+        total_pages=pagination.pages,
+        start_page=start_page,
+        end_page=end_page,
     )
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

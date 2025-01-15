@@ -288,6 +288,10 @@
   clear: both;
 }
 
+.pagination{
+  margin-left: 40%;
+}
+
 @media (max-width:1199px){
   #cards{
     padding-right: 1%;

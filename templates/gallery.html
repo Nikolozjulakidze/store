@@ -76,7 +76,6 @@
                 </li>
             {% endif %}
 
-
             {% for page in range(start_page, end_page + 1) %}
                 <li class="page-item {% if page == current_page %}active{% endif %}">
                     <a class="page-link" href="{{ url_for(request.endpoint, page=page) }}">{{ page }}</a>
@@ -95,6 +94,7 @@
         </ul>
     </nav>
 </div>
+
 
 
 {% endblock %}
