@@ -301,6 +301,10 @@
     margin-left: 35% !important;
   }
 
+  .pagination{
+    margin-left: 30%;
+  }
+
 }
 
 
@@ -386,12 +390,20 @@
   .upload{
     margin-left: 20% !important;
   }
+
+  .pagination{
+    margin-left: 30%;
+  }
 }
 
 @media(max-width:575px){
 
   .card{
     margin-left: 23%;
+  }
+
+  .pagination{
+    margin-left: 20%;
   }
 
 }

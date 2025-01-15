@@ -123,7 +123,7 @@ def about():
 
 @app.route('/gallery')
 def gallery():
-    items_per_page = 4 
+    items_per_page = 8
     current_page = int(request.args.get('page', 1)) 
 
 
@@ -140,7 +140,7 @@ def gallery():
     items = Product.query.offset((current_page - 1) * items_per_page).limit(items_per_page).all()
 
     pages_to_show = 2
-    start_page = max(1, current_page - (pages_to_show // 2))
+    start_page = max(1, current_page - (pages_to_show // 1))
     end_page = min(total_pages, start_page + pages_to_show - 1)
     start_page = max(1, end_page - pages_to_show + 1)
 
