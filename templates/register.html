@@ -19,10 +19,17 @@
     <div class="mb-3">
       {{ form.password(class="form-control", placeholder="Password") }}
     </div>
+    
 
     <div class="mb-3">
       {{ form.repeat_password(class="form-control", placeholder="Repeat Password") }}
     </div>
+
+    {% if password_error %}
+    <div class="alert alert-danger mt-2">
+      {{ password_error }}
+    </div>
+    {% endif %}
 
     <div class="d-grid">
       {{ form.Submit(class="btn btn-primary") }}

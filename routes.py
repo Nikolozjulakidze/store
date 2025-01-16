@@ -204,16 +204,28 @@ def register():
         if existing_user:
             return render_template("register.html", form=form, error="Username already exists")
 
-
         if form.username.data.lower() == "admin":
             if form.password.data == "admin123!":
                 role = "Admin"
             else:
                 return render_template("register.html", form=form, error="Invalid password for Admin")
-
         else:
             role = "Guest"
 
+        
+        allowed_symbols = "!@#$%^&*()_+-=[]{}|;':,.<>?/"
+
+      
+        contains_symbol = False
+        for i in range(len(form.password.data)):
+            if form.password.data[i] in allowed_symbols:
+                contains_symbol = True
+                break
+
+        if not contains_symbol:
+            return render_template("register.html", form=form, password_error="Password must have at least one symbol") 
+
+   
         new_user = Users(
             username=form.username.data,
             password=form.password.data,
@@ -225,6 +237,7 @@ def register():
         return redirect("/login")
 
     return render_template("register.html", form=form)
+
 
 
 
