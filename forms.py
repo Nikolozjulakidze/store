@@ -35,20 +35,9 @@ class RegisterForm(FlaskForm):
     Submit = SubmitField("Register")
 
     def validate_password(self, field):
-        contains_punctuation = False
-        contains_digits = False
-
-        for letter in punctuation:
-            if letter in field.data:
-                contains_punctuation = True
-
-        for digit in digits:
-            if digit in field.data:
-                contains_digits = True
-
-        if not contains_punctuation:
+        if not any(char in punctuation for char in field.data):
             raise ValidationError("Password needs some symbols.")
-        if not contains_digits:
-            raise ValidationError("Password needs numbers.")
 
+        if not any(char in digits for char in field.data):
+            raise ValidationError("Password needs numbers.")
 

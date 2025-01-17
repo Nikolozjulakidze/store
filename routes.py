@@ -5,7 +5,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 from uuid import uuid4
 from ext import app, db
 from models import Product, Users
-from math import ceil
 
 
 @app.route("/")
@@ -195,37 +194,24 @@ def search_gallery():
     )
 
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-
         existing_user = Users.query.filter_by(username=form.username.data).first()
         if existing_user:
             return render_template("register.html", form=form, error="Username already exists")
 
+
         if form.username.data.lower() == "admin":
-            if form.password.data == "admin123!":
-                role = "Admin"
-            else:
+            if form.password.data != "admin123!":
                 return render_template("register.html", form=form, error="Invalid password for Admin")
+            role = "Admin"
         else:
             role = "Guest"
 
-        
-        allowed_symbols = "!@#$%^&*()_+-=[]{}|;':,.<>?/"
 
-      
-        contains_symbol = False
-        for i in range(len(form.password.data)):
-            if form.password.data[i] in allowed_symbols:
-                contains_symbol = True
-                break
-
-        if not contains_symbol:
-            return render_template("register.html", form=form, password_error="Password must have at least one symbol") 
-
-   
         new_user = Users(
             username=form.username.data,
             password=form.password.data,
@@ -233,10 +219,11 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-
         return redirect("/login")
 
+
     return render_template("register.html", form=form)
+
 
 
 
@@ -244,14 +231,20 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
-        users = Users.query.filter(Users.username == form.username.data).first()
-        if users != None and users.check_password(form.password.data):
-            login_user(users, remember=form.remember_me)
-            return redirect("/")
-      
+    error_message = None
 
-    return render_template("login.html", form=form)
+    if form.validate_on_submit():
+
+        user = Users.query.filter_by(username=form.username.data).first()
+
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/")
+        else:
+            error_message = "Invalid username or password"
+
+    return render_template("login.html", form=form, error_message=error_message)
+
 
 
 @app.route("/logout")
